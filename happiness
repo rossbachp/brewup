@@ -125,7 +125,7 @@ function set_defaults() {
 	defaults write com.apple.screencapture type -string "png"
 
 	###############################################################################
-	# Trackpad                                                                  #
+	# Trackpad                                                                    #
 	###############################################################################
 
 	# Trackpad: enable tap to click for this user and for the login screen
@@ -153,17 +153,8 @@ function set_defaults() {
 	defaults write com.apple.dock wvous-tr-corner -int 5
 
 	###############################################################################
-	# SizeUp.app                                                                  #
+	# Disable Auto correction                                                     #
 	###############################################################################
-
-	# Own key bindings
-	defaults import com.irradiatedsoftware.SizeUp ~/develop/dotfiles/plist/sizeup.plist
-
-	# Start SizeUp at login
-	defaults write com.irradiatedsoftware.SizeUp StartAtLogin -bool true
-
-	# Don’t show the preferences window on next start
-	defaults write com.irradiatedsoftware.SizeUp ShowPrefsOnNextStart -bool false
 
 	# Disable auto corrections
 	defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
