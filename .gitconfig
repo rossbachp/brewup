@@ -9,11 +9,13 @@
 	oldest-ancestor = !bash -c 'diff --old-line-format='' --new-line-format='' <(git rev-list --first-parent "${1:-master}") <(git rev-list --first-parent "${2:-HEAD}") | head -1' -
         branchdiff = !sh -c \"git diff `git oldest-ancestor`.. $*\"
 	branchlog = !sh -c \"git log `git oldest-ancestor`.. $*\"
+  pullify = config --add remote.origin.fetch '+refs/pull/*/head:refs/remotes/origin/pr/*'
 [color]
 	ui = always
 [core]
 	excludesfile = ~/.gitignore
 	attributesfile = ~/.gitattributes
+	editor = vim
 [color "branch"]
 	current = yellow reverse
 	local = yellow
@@ -45,9 +47,15 @@
 [url "git@bicketbucket.com:"]
 	pushInsteadOf = "https://bitbucket.org/"
 [user]
-	name = Stefan Scherer
-	email = scherer_stefan@icloud.com
+	name = Peter Rossbach
+	email = peter.rossbach@bee42.com
 [push]
 	default = simple
 [commit]
 	gpgsign = true
+[credential]
+  helper = osxkeychain
+[pull]
+  rebase = true
+[init]
+  defaultBranch = main

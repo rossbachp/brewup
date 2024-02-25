@@ -1,23 +1,59 @@
 {
     "window.zoomLevel": 0,
-    "workbench.startupEditor": "newUntitledFile",
-    "qtf.themeOne": "Atom One Dark",
-    "qtf.themeTwo": "Atom One Light",
-    "jenkins.pipeline.linter.connector.user": "stefanscherer",
-    "jenkins.pipeline.linter.connector.url": "https://ci.docker.com/teams-tools/pipeline-model-converter/validate",
-    "jenkins.pipeline.linter.connector.crumbUrl": "https://ci.docker.com/teams-tools/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,%22:%22,//crumb)",
-    "window.autoDetectColorScheme": true,
-    "workbench.colorTheme": "Atom One Dark",
-    "workbench.preferredDarkColorTheme": "Atom One Dark",
-    "workbench.preferredLightColorTheme": "Atom One Light",
-    "hediet.vscode-drawio.local-storage": "eyIuZHJhd2lvLWNvbmZpZyI6IntcImxhbmd1YWdlXCI6XCJcIixcImN1c3RvbUZvbnRzXCI6W10sXCJsaWJyYXJpZXNcIjpcImdlbmVyYWxcIixcImN1c3RvbUxpYnJhcmllc1wiOltcIkwuc2NyYXRjaHBhZFwiXSxcInBsdWdpbnNcIjpbXSxcInJlY2VudENvbG9yc1wiOltdLFwiZm9ybWF0V2lkdGhcIjpcIjI0MFwiLFwiY3JlYXRlVGFyZ2V0XCI6ZmFsc2UsXCJwYWdlRm9ybWF0XCI6e1wieFwiOjAsXCJ5XCI6MCxcIndpZHRoXCI6ODUwLFwiaGVpZ2h0XCI6MTEwMH0sXCJzZWFyY2hcIjp0cnVlLFwic2hvd1N0YXJ0U2NyZWVuXCI6dHJ1ZSxcImdyaWRDb2xvclwiOlwiI2QwZDBkMFwiLFwiZGFya0dyaWRDb2xvclwiOlwiIzZlNmU2ZVwiLFwiYXV0b3NhdmVcIjp0cnVlLFwicmVzaXplSW1hZ2VzXCI6bnVsbCxcIm9wZW5Db3VudGVyXCI6MCxcInZlcnNpb25cIjoxOCxcInVuaXRcIjoxLFwiaXNSdWxlck9uXCI6ZmFsc2UsXCJ1aVwiOlwiXCJ9In0=",
+    "vs-kubernetes": {
+        "vs-kubernetes.knownKubeconfigs": [
+        ],
+        "vs-kubernetes.kubeconfig": "/home/nutzer36/.kube/config",
+        "vscode-kubernetes.helm-path-linux": "/home/nutzer36/.local/state/vs-kubernetes/tools/helm/linux-amd64/helm",
+        "vscode-kubernetes.minikube-path-linux": "/home/nutzer36/.local/state/vs-kubernetes/tools/minikube/linux-amd64/minikube",
+        "vscode-kubernetes.kubectl-path-linux": "/home/nutzer36/.local/state/vs-kubernetes/tools/kubectl/kubectl"
+    },
+    "go.alternateTools": {
+      "go": "/usr/local/go/bin"
+    },
+    "go.useLanguageServer": true,
+    "go.languageServerExperimentalFeatures": {
+  
+        "diagnostics": true,
+        "documentLink": true
+    },
+    "go.goroot": "/usr/local/go",
+    "go.toolsManagement.autoUpdate": true,
+    "editor.suggestSelection": "first",
     "terminal.integrated.fontSize": 15,
     "editor.lineHeight": 0,
     "editor.fontSize": 14,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "editor.accessibilitySupport": "on",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "redhat.telemetry.enabled": false,
+    "java.project.importOnFirstTimeStartup": "automatic",
+    "files.autoSave": "afterDelay",
+    "terminal.integrated.enableMultiLinePasteWarning": false,
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "workbench.editor.enablePreview": false,
+    "workbench.preferredDarkColorTheme": "Default Light+",
+    "workbench.colorTheme": "Default Light+",
+    "workbench.startupEditor": "none",
+    "yaml.schemas": {
+  
+    },
+    "sonarlint.pathToNodeExecutable": "/opt/homebrew/bin/node",
+    "[markdown]": {
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    },
     "gitlens.views.repositories.location": "gitlens",
     "gitlens.views.fileHistory.location": "gitlens",
     "gitlens.views.lineHistory.location": "gitlens",
     "gitlens.views.compare.location": "gitlens",
-    "gitlens.views.search.location": "gitlens",
-    "editor.formatOnSave": true
-}
+    "gitlens.views.search.location": "gitlens"
+  }

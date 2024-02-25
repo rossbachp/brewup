@@ -18,14 +18,6 @@ for file in ~/.{extra,bash_prompt,exports,aliases,functions}; do
 done
 unset file
 
-# WSL
-if [ -d /mnt/c ]; then
-  for file in ~/.{bash_profile_wsl,aliases_wsl,functions_wsl}; do
-    [ -r "$file" ] && source "$file"
-  done
-  unset file
-fi
-
 if [ -e /opt/homebrew/bin/infra-cli ]; then
   eval "$(infra-cli aliases)"
 fi
@@ -35,7 +27,7 @@ if [ -e /usr/local/bin/infra-cli ]; then
 fi
 
 # init z   https://github.com/rupa/z
-. ~/code/z/z.sh
+. ~/develop/z/z.sh
 
 # init rvm
 if [ -e $HOME/.rvm/scripts/rvm ]; then
@@ -69,8 +61,8 @@ fi
 #export GOROOT=${HOME}/.pinata/cache/go${GOVERSION}/go
 #export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
-if [ -f "$HOME/code/azure-cli/az.completion" ]; then
-  source "$HOME/code/azure-cli/az.completion"
+if [ -f "$HOME/develop/azure-cli/az.completion" ]; then
+  source "$HOME/develop/azure-cli/az.completion"
 fi
 
 # NVM

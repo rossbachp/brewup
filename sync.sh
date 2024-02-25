@@ -3,11 +3,11 @@ cd "$(dirname "$0")" || exit 5
 git pull
 
 function doIt() {
-  if [ ! -d ~/code ]; then
-    mkdir ~/code
+  if [ ! -d ~/develop ]; then
+    mkdir ~/develop
   fi
-  if [ ! -d ~/code/z ]; then
-    git clone https://github.com/rupa/z.git ~/code/z
+  if [ ! -d ~/develop/z ]; then
+    git clone https://github.com/rupa/z.git ~/develop/z
   fi
   if [ ! -d ~/.logs ]; then
     mkdir ~/.logs
@@ -17,20 +17,16 @@ function doIt() {
     git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
   fi
 
-  if [ ! -d /mnt/c ]; then
-    # on Mac skip Windows AppData folder
-    rsync -av Library ~
-  else
-    # on Windows skip Mac Library folder
-    WINHOME=$(wslpath "$(cmd.exe /C "echo %USERPROFILE%" 2>/dev/null | tr -d '\r' | tail -1)")
-    rsync -av AppData "$WINHOME"
-  fi
-
-  rsync --exclude ".git/" --exclude "images/" --exclude Library --exclude AppData \
+  rsync -av Library ~
+  
+  rsync --exclude ".git/" --exclude "images/" --exclude Library --exclude "add-on/" \
         --exclude "sync.sh" --exclude "README.md" \
+        --exclude "brew-tap.txt" \
         --exclude "brew.txt" \
+        --exclude "krew.txt" \
+        --exclude "mas.txt" \
         --exclude "cask-minimal.txt" --exclude "cask-full.txt" \
-        --exclude "setup-mac" --exclude "plist" \
+        --exclude "happiness" --exclude "plist" \
         --exclude "fetch-code-prefs.sh" \
         --exclude "npm-install.sh" --exclude "LICENSE.txt" \
         --exclude ".gitkeep" --exclude ".gitconfig" --exclude "fetch-sublime-prefs.sh" \
@@ -46,12 +42,10 @@ function doIt() {
   # Visual Studio Code
   if [ -f ./Library/Application\ Support/Code/User/extensions.txt ]; then
     extensions=$(cat ./Library/Application\ Support/Code/User/extensions.txt)
-    if [ ! -d /mnt/c ]; then
-      if which code >/dev/null 2>&1; then
-        for ext in $extensions; do
-          code --install-extension "$ext"
-        done
-      fi
+    if which code >/dev/null 2>&1; then
+      for ext in $extensions; do
+        code --install-extension "$ext"
+      done
     fi
   fi
 }

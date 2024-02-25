@@ -1,56 +1,27 @@
 #!/bin/bash
+# Mac
+osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to not dark mode'
 
-if [ ! -d /mnt/c ]; then
-  # Mac
-  osascript -e 'tell application "System Events" to tell appearance preferences to set dark mode to not dark mode'
-
-  if [ "$(osascript -e 'tell application "System Events" to tell appearance preferences to get dark mode')" == "true" ]; then
-    osascript -e '
-      tell application "Terminal"
-          set defaultSettings to first settings set whose name is "One Dark"
-          set currentSettings to defaultSettings
-          repeat with aWindow in windows
-              repeat with aTab in tabs of aWindow
-                  set current settings of aTab to currentSettings
-              end repeat
-          end repeat
-      end tell' 2>/dev/null
-  else
-    osascript -e '
-      tell application "Terminal"
-          set defaultSettings to first settings set whose name is "One Light"
-          set currentSettings to defaultSettings
-          repeat with aWindow in windows
-              repeat with aTab in tabs of aWindow
-                  set current settings of aTab to currentSettings
-              end repeat
-          end repeat
-      end tell' 2>/dev/null
-  fi
+if [ "$(osascript -e 'tell application "System Events" to tell appearance preferences to get dark mode')" == "true" ]; then
+  osascript -e '
+    tell application "Terminal"
+        set defaultSettings to first settings set whose name is "One Dark"
+        set currentSettings to defaultSettings
+        repeat with aWindow in windows
+            repeat with aTab in tabs of aWindow
+                set current settings of aTab to currentSettings
+            end repeat
+        end repeat
+    end tell' 2>/dev/null
 else
-  # Windows in WSL
-  WINHOME=$(wslpath "$(cmd.exe /C "echo %USERPROFILE%" 2>/dev/null | tr -d '\r' | tail -1)")
-  settings="$WINHOME/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json"
-  settingsPreview="$WINHOME/AppData/Local/Packages/Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe/LocalState/settings.json"
-
-  if reg.exe query 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' /v AppsUseLightTheme | grep -q 0x1; then
-    useLightTheme=0
-    fromTheme=OneLight
-    toTheme=OneDark
-  else
-    useLightTheme=1
-    fromTheme=OneDark
-    toTheme=OneLight
-  fi
-  if [ -f "$settings" ]; then
-    sed "s/\"colorScheme\": \"$fromTheme\"/\"colorScheme\": \"$toTheme\"/g" "$settings" >/tmp/terminal$$.json
-    cp /tmp/terminal$$.json "$settings"
-  fi
-  if [ -f "$settingsPreview" ]; then
-    sed "s/\"colorScheme\": \"$fromTheme\"/\"colorScheme\": \"$toTheme\"/g" "$settingsPreview" >/tmp/terminal$$.json
-    cp /tmp/terminal$$.json "$settingsPreview"
-  fi
-  rm /tmp/terminal$$.json
-  reg.exe add 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' /v SystemUsesLightTheme /t REG_DWORD /f /d $useLightTheme > /dev/null
-  reg.exe add 'HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize' /v AppsUseLightTheme /t REG_DWORD /f /d $useLightTheme > /dev/null
+  osascript -e '
+    tell application "Terminal"
+        set defaultSettings to first settings set whose name is "One Light"
+        set currentSettings to defaultSettings
+        repeat with aWindow in windows
+            repeat with aTab in tabs of aWindow
+                set current settings of aTab to currentSettings
+            end repeat
+        end repeat
+    end tell' 2>/dev/null
 fi

@@ -42,7 +42,7 @@ function git_info() {
 
 # Only show username/host if not default
 function usernamehost() {
-  if [[ $USER != stefan* ]]; then echo "${MAGENTA}$USER${RESET}${BOLD} at ${ORANGE}$HOSTNAME${RESET}${BOLD} in "; fi
+  if [[ $USER != peter* ]]; then echo "${MAGENTA}$USER${RESET}${BOLD} at ${ORANGE}$HOSTNAME${RESET}${BOLD} in "; fi
 }
 
 # iTerm Tab and Title Customization and prompt customization

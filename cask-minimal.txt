@@ -1,2 +1,5 @@
 rectangle
 visual-studio-code
+docker
+multipass
+1password
