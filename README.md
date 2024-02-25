@@ -103,6 +103,10 @@ kubectl graph pods --field-selector status.phase=Running -n kube-system | dot -T
   - add fluxcd support :)
   - cloudflared tunnel
 
+- support 1password vault
+  - https://external-secrets.io/v0.5.7/provider-1password-automation/#deploy-a-connect-server
+  - https://github.com/1Password/connect/tree/a0a5f3d92e68497098d9314721335a7bb68a3b2d/examples/kubernetes
+
 ## Mas
 
 - https://github.com/mas-cli/mas
