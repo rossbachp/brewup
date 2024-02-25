@@ -31,14 +31,15 @@ Feedback welcome. Pull requests welcome.
 - https://github.com/StefanScherer/dotfiles
 - https://github.com/paulirish/dotfiles
 
-## brewup your mac
+## brewup your mac with happiness
 
-With the bee42 honeypod dotfiles installer
+With the bee42 honeypod brewup installer
 
 - https://github.com/nvm-sh/nvm
 - https://github.com/moovweb/gvm
 - https://github.com/rupa/z.git
 - https://github.com/gmarik/vundle.git
+- https://krew.sigs.k8s.io
 
 Mac Apps
 
@@ -47,15 +48,11 @@ Mac Apps
 - https://bjango.com/mac/istatmenus/
 - https://github.com/chipmk/docker-mac-net-connect
   - forward all ports from your docker for mac vm :)
+- Wireguard
+- XCode
   
 ```shell
 curl -fsSL https://raw.githubusercontent.com/rossbachp/brewup/main/happiness | bash
-
-
-# Install via Homebrew
-brew install chipmk/tap/docker-mac-net-connect
-# Run the service and register it to launch at boot
-sudo brew services start chipmk/tap/docker-mac-net-connect
 ```
 
 Features:
@@ -70,19 +67,41 @@ Features:
 - https://github.com/Fred78290/vagrant-multipass
 - https://ohmyz.sh/#install
 
-## Completions
+More options:
 
 ```shell
-. <(flux completion zsh)
+./happiness --help
 ```
 
+## Other options
+
+- docker registry and local git server
+- install MAS apps
+- Install krew plugins
+
+### Planned
+
+- docker tap support for better access LB and docker network
+
 ```shell
-# https://github.com/steveteuber/kubectl-graph
+# Install via Homebrew
+brew install chipmk/tap/docker-mac-net-connect
+# Run the service and register it to launch at boot
+sudo brew services start chipmk/tap/docker-mac-net-connect
+```
+
+- Create kubernetes Resource graphs with [kubectl-graph](https://github.com/steveteuber/kubectl-graph)
+
+```shell
 
 docker run -d -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=neo4j/secret neo4j
 # argodb?
 kubectl graph pods --field-selector status.phase=Running -n kube-system | dot -T svg -o pods.svg
 ```
+
+- Start kubernetes cluster with k3d or kind
+  - add fluxcd support :)
+  - cloudflared tunnel
 
 ## Mas
 
@@ -103,8 +122,8 @@ mas search BlackMagic
 
 Copyright (c) 2024 Peter Rossbach <peter.rossbach@bee42.com>
 
-MIT License, see LICENSE.txt for more details.
+MIT License, see [LICENSE.txt](LICENSE.txt) for more details.
 
 Regards,
 
-- [`|-o-|` The pathfinder - Peter](mailto://peter.rossbach@bee42.com)
+[`|-o-|` The pathfinder - Peter](mailto://peter.rossbach@bee42.com)
