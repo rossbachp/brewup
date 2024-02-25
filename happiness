@@ -119,7 +119,7 @@ function set_defaults() {
 	defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 	# Save screenshots to the desktop
-	defaults write com.apple.screencapture location -string "${HOME}/Desktop"
+	defaults write com.apple.screencapture location -string "${HOME}/ScreenShot"
 
 	# Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
 	defaults write com.apple.screencapture type -string "png"
@@ -190,7 +190,8 @@ function create_docker_cnbc_dev() {
 		echo "Installing local mirror registries (docker hub and k8s) ..."
 		docker compose --project-directory add-on/cnbc --project cnbc --file docker-compose.yml up -d 
 		echo "add this mirrors to your docker daemon.json for desktop and restart it"
-		cat <<EOF
+		if [ ! -f  ~/.docker/daemon.json ] ; then
+  		cat >~/.docker/daemon.json <<EOF
 {
 	"builder": {
 		"gc": {
@@ -200,13 +201,17 @@ function create_docker_cnbc_dev() {
 	},
 	"experimental": true,
 	"metrics-addr": "0.0.0.0:9323",
-	"registry-mirrors": ["http://host.docker.internal:5001"],
-	"insecure-registries" : ["host.docker.internal:5001", "host.docker.internal:5002", "host.docker.internal:5000", "cnbc-registry:5000", "cnbc-docker-mirror:5001", "cnbc-k8s-mirror:5002" ] 
+	"registry-mirrors": [ "http://host.docker.internal:5001" ],
+	"insecure-registries" : [ "host.docker.internal:5001", "host.docker.internal:5002", "host.docker.internal:5000", "cnbc-registry:5000", "cnbc-docker-mirror:5001", "cnbc-k8s-mirror:5002" ] 
 }
 EOF
+    fi
 	else
 		echo "Please install docker before your can start the cnbc-dev containers"
 	fi
+
+	echo "Add docker-mac-net-connect as Service ..."
+	sudo brew services start chipmk/tap/docker-mac-net-connect
 }
 
 function usage() {
@@ -267,7 +272,7 @@ done
 # reset the translated args
 eval set -- "$args"
 # now we can process with getopt
-while getopts ":ubfdDt" opt; do
+while getopts ":ubcmkfdBDt" opt; do
 	case $opt in
 	h) usage ;;
 	u) UPDATE=1 ;;
