@@ -2,7 +2,8 @@
 
 <img src="images/cnbc-dev.png" alt="cnbc-dev" style="width: 100%;"/>
 
-We use Homebrew a.k.a. brew to install software on our macOS computers.
+We use Homebrew a.k.a. brew to install software on our
+Cloud Native Base Camp macOS computers.
 
 ## Introduction
 
@@ -19,6 +20,7 @@ To learn about brew and Brewfile capabilties, please see:
 - https://brew.sh/
 - https://homebrew-file.readthedocs.io/
 - https://github.com/Homebrew/homebrew-bundle
+- https://github.com/mas-cli/mas
 
 Using a Brew helps us with our Infrastructure as Code (IaC) initiatives.
 
@@ -95,7 +97,7 @@ mas search Whatsapp
   310633997  WhatsApp Messenger                                       (24.4.4)
 mas search BlackMagic
    425264550  Blackmagic Disk Speed Test     (3.4.2)
-...
+```
 
 ## Licensing
 
