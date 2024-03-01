@@ -85,5 +85,5 @@ chipmk/tap/docker-mac-net-connect
 fluxcd/tap/flux
 1password-cli
 tmux
-cargo
+rust
 dagger/tap/dagger
