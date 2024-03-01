@@ -60,5 +60,11 @@ else
   fi
 fi
 
+
+
 unset doIt
 source ~/.bash_profile
+
+sudo ln -sfn /opt/homebrew/opt/openjdk/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk.jdk
+jenv add "/opt/homebrew/opt/openjdk@11"
+jenv add "/opt/homebrew/opt/openjdk@21"
