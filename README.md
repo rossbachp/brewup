@@ -92,8 +92,15 @@ cd brewup
 ./happiness -b
 (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> $HOME/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
-./happiness -b
-
+# brew full
+./happiness -f
+./happiness -D
+# add defaults
+./sync.sh
+# start docker services
+./happiness -c
+# add docker plugins
+./happiness -d
 ```
 
 Full installation
