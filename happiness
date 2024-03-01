@@ -214,10 +214,10 @@ Set up a fresh Mac or run individual parts of it.
 OPTIONS:
   --help|-h       Show this message
   --update|-u     Install macOS updates
-  --brew|-b       Install Homebrew, all brew.txt packages an cask-minimal.txt
+  --brew|-b       Install Homebrew, all brew-minimal.txt packages an cask-minimal.txt
   --cnbc|-c       Install CNBC DEV base container services (registries, git)
   --krew|-k       Install Kubernetes kubectl plugins with krew
-  --full|-f       Install all brew packages and casks defined in cask-full.txt
+  --full|-f       Install all brew-full.txt packages and casks defined in cask-full.txt
   --mas|-m        Install App Store apps (or update it - ?later)
   --brewup|-B     Install brewup repo or update it
   --defaults|-D   Install default user settings
