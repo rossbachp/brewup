@@ -22,9 +22,11 @@ function doIt() {
   rsync --exclude ".git/" --exclude "images/" --exclude Library --exclude "add-on/" \
         --exclude "sync.sh" --exclude "README.md" \
         --exclude "brew-tap.txt" \
-        --exclude "brew.txt" \
+        --exclude "brew-minimal.txt"  --exclude "brew-full.txt" \
         --exclude "krew.txt" \
         --exclude "mas.txt" \
+        --exclude "docker.txt" \
+        --exclude "code.txt" \
         --exclude "cask-minimal.txt" --exclude "cask-full.txt" \
         --exclude "happiness" --exclude "plist" \
         --exclude "fetch-code-prefs.sh" \
