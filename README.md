@@ -69,6 +69,19 @@ EOF
 tmux source ~/.tmux.conf
 ```
 
+* https://docs.github.com/de/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+
+```shell
+ssh-keygen -t ed25519 -C "peter.rossbach@bee42.com" -f ~/.ssh/id_ed25519-github
+cat >>~/.ssh/config <<EOF
+Host github.com
+  User git
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519-github
+EOF
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519-github
+```
 
 Mac Apps
 
