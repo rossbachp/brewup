@@ -40,6 +40,35 @@ With the bee42 honeypod brewup installer
 - https://github.com/rupa/z.git
 - https://github.com/gmarik/vundle.git
 - https://krew.sigs.k8s.io
+- https://dagger.io
+  - https://dagger.io/blog/introducing-dagger-functions
+
+tmux
+- https://hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/
+- https://hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/
+- https://dev.to/techspresso/tmux-and-vscode-persist-terminals-for-productivity-and-profit-2nd1
+- https://pragprog.com/titles/bhtmux2/tmux-2/
+- https://github.com/tmux/tmux/wiki
+- https://github.com/jonmosco/kube-tmux
+- https://arcolinux.com/everything-you-need-to-know-about-tmux-status-bar/
+- https://gist.github.com/endersonmaia/3902b94585ef46a9956c0ca9e901cbdf
+- https://gist.github.com/dmytro/3984680
+
+  - multiple ssh sessions
+
+```bash
+mkdir -p $HOME/.tmux/
+cd $HOME/.tmux/
+git clone --depth 1 https://github.com/jonmosco/kube-tmux
+#curl -sL -o $HOME/.tmux/kube-tmux/kube.tmux \
+#  https://raw.githubusercontent.com/jonmosco/kube-tmux/master/kube.tmux
+#chmod +x $HOME/.tmux/kube-tmux/kube.tmux
+cat >>~/.tmux.conf <<EOF
+set -g status-right "#(/bin/bash $HOME/.tmux/kube-tmux/kube.tmux 250 red cyan)"
+EOF
+tmux source ~/.tmux.conf
+```
+
 
 Mac Apps
 

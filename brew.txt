@@ -84,3 +84,6 @@ jsonnet-bundler
 chipmk/tap/docker-mac-net-connect
 fluxcd/tap/flux
 1password-cli
+tmux
+cargo
+dagger/tap/dagger

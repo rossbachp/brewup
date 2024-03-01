@@ -8,12 +8,14 @@ cat ssh/id_cnbc-dev-sync-rsa.pub >>ssh/authorized_keys
 
 # create tool
 docker build -t bee42/ssh-keyscan .
-docker container run --rm bee42/git-ssh  \
-  ssh-keyscan -p 2222 host.docker.internal >ssh/known_hosts
+docker container run --rm -v $(pwd)/ssh:/root/ssh bee42/git-ssh  \
+  ssh-keyscan -p 2222 host.docker.internal >>/root/ssh/known_hosts
+
+ssh-keyscan -p 2222 127.0.0.1 >>~/.ssh/known_hosts
 
 # create manually the git repo
-ssh git@localhost -p 2222
-# pwd 12345
+ssh git@127.0.0.1 -i ssh/id_cnbc-dev-sync-rsa -p 2222
+# pwd see your .env
 mkdir /srv/git/cnbc-dev.git
 git-init --bare /srv/git/cnbc-dev.git
 exit
