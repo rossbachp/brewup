@@ -163,7 +163,8 @@ function set_defaults() {
 	defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 	defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 	defaults write NSGlobalDomain NSAutomaticTextCompletionEnabled -bool false
-	#defaults write com.apple.Safari WebAutomaticSpellingCorrectionEnabled -bool false
+	mkdir -p $HOME/Library/Containers/com.apple.Safari/Data/Library/Preferences/com.apple.Safari
+	defaults write com.apple.Safari WebAutomaticSpellingCorrectionEnabled -bool false
 
 	# sudo osascript -e 'tell application "System Events" to set require password to wake of security preferences to true'
 }
