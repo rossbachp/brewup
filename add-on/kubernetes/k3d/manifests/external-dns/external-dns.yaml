@@ -1,0 +1,11 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: external-dns
+  namespace: kube-system
+spec:
+  repo: https://charts.bitnami.com/bitnami
+  chart: external-dns
+  version: "6.31.4"
+  targetNamespace: external-dns
+  createNamespace: true
