@@ -195,7 +195,7 @@ function install_docker_extension() {
 function create_docker_cnbc_dev() {
 	if command -v docker >/dev/null 2>&1; then
 		echo "Installing local mirror registries (docker hub and k8s) and start cnbc services ..."
-		docker compose --project-directory ~/develop/brewup/add-on/cnbc --project cnbc --file docker-compose.yml up -d 
+		docker compose --project-directory ~/develop/brewup/add-on/cnbc --project-name cnbc --file docker-compose.yml up -d 
 		echo "add this mirrors to your docker daemon.json for desktop and restart it"
 		if [ ! -f  ~/.docker/daemon.json ] ; then
   		cat >~/.docker/daemon.json <<EOF
