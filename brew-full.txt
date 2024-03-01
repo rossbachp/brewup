@@ -86,5 +86,3 @@ flux
 tmux
 dagger
 rust
-pinentry
-pinentry-mac
