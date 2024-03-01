@@ -39,12 +39,11 @@ watch
 wdiff
 wget
 xz
-task
 mas
 ansible
 go
 go-jsonnet
-go-task
+go-task/tap/go-task
 ipcalc
 openjdk
 openjdk@11
