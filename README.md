@@ -86,8 +86,8 @@ On a fresh mac - make backup with timemachine first!
 xcode-select --install
 # find dialog and install the developer tools
 mkdir -p ~/develop && cd ~develop
-curl -fsSL -o happiness https://raw.githubusercontent.com/rossbachp/brewup/main/happiness
-chmod +x happiness
+git clone --depth 1 https://github.com/rossbachp/brewup
+cd brewup
 # install brew 
 ./happiness -b
 ```

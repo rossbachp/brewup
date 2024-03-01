@@ -7,14 +7,14 @@ function doIt() {
     mkdir ~/develop
   fi
   if [ ! -d ~/develop/z ]; then
-    git clone https://github.com/rupa/z.git ~/develop/z
+    git clone --depth 1 https://github.com/rupa/z.git ~/develop/z
   fi
   if [ ! -d ~/.logs ]; then
     mkdir ~/.logs
     chmod 700 ~/.logs
   fi
   if [ ! -d ~/.vim/bundle/vundle ]; then
-    git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+    git clone --depth 1 https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
   fi
 
   rsync -av Library ~
