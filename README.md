@@ -90,6 +90,10 @@ git clone --depth 1 https://github.com/rossbachp/brewup
 cd brewup
 # install brew 
 ./happiness -b
+(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> $HOME/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+./happiness -b
+
 ```
 
 Full installation

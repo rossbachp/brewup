@@ -1,5 +1,12 @@
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export PATH="$PATH:~/.docker/bin/
+export PATH="/opt/homebrew/opt/inetutils/libexec/gnubin:$PATH"
+
 export ZSH="$HOME/.oh-my-zsh"
+
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
+
 jdk() {
    version=$1
    export JAVA_HOME=$(/usr/libexec/java_home -v"$version");

@@ -19,7 +19,7 @@ icu4c
 imagemagick
 inetutils
 lua
-openssl@1.1
+openssl
 pass
 pcre2
 pinentry

@@ -119,7 +119,7 @@ function set_defaults() {
 	defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 	# Save screenshots to the desktop
-	defaults write com.apple.screencapture location -string "${HOME}/ScreenShot"
+	defaults write com.apple.screencapture location -string "${HOME}/ScreenShots"
 
 	# Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
 	defaults write com.apple.screencapture type -string "png"
@@ -197,8 +197,7 @@ function create_docker_cnbc_dev() {
 		echo "Installing local mirror registries (docker hub and k8s) and start cnbc services ..."
 		docker compose --project-directory ~/develop/brewup/add-on/cnbc --project-name cnbc --file ~/develop/brewup/add-on/cnbc/docker-compose.yml up -d 
 		echo "add this mirrors to your docker daemon.json for desktop and restart it"
-		if [ ! -f  ~/.docker/daemon.json ] ; then
-  		cat >~/.docker/daemon.json <<EOF
+  	cat >~/.docker/daemon.json <<EOF
 {
 	"builder": {
 		"gc": {
@@ -212,7 +211,6 @@ function create_docker_cnbc_dev() {
 	"insecure-registries" : [ "host.docker.internal:5001", "host.docker.internal:5002", "host.docker.internal:5000", "cnbc-registry:5000", "cnbc-docker-mirror:5001", "cnbc-k8s-mirror:5002" ] 
 }
 EOF
-    fi
 	else
 		echo "Please install docker before your can start the cnbc-dev containers"
 	fi
