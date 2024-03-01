@@ -172,7 +172,7 @@ function install_krew_packages() {
 	echo "Install new kubectl plugins with krew from krew.txt"
 	comm -23 \
 		<(sort ~/develop/brewup/krew.txt) \
-		<(kubectl krew info -v 0) |
+		<(kubectl krew list | tail -n +1) |
 		xargs kubectl krew install
 }
 
@@ -180,8 +180,16 @@ function install_vscode_extension() {
 	echo "Install new vscode_extension from code.txt"
 	comm -23 \
 		<(sort ~/develop/brewup/code.txt) \
-		<(code --list-extensions | grep) |
+		<(code --list-extensions) |
 		xargs code --install-extension
+}
+
+function install_docker_extension() {
+	echo "Install new docker extension from docker.txt"
+	comm -23 \
+		<(sort ~/develop/brewup/docker.txt) \
+		<(docker extension list --format="json" | jq -r ".[].image" | sort ) |
+		xargs docker extension install
 }
 
 function create_docker_cnbc_dev() {
@@ -224,12 +232,14 @@ OPTIONS:
   --update|-u     Install macOS updates
   --brew|-b       Install Homebrew, all brew-minimal.txt packages an cask-minimal.txt
   --cnbc|-c       Install CNBC DEV base container services (registries, git)
+  --docker|-d     Install docker for desktop extensions
   --krew|-k       Install Kubernetes kubectl plugins with krew
   --full|-f       Install all brew-full.txt packages and casks defined in cask-full.txt
   --mas|-m        Install App Store apps (or update it - ?later)
   --brewup|-B     Install brewup repo or update it
   --defaults|-D   Install default user settings
   --terminal|-t   Install terminal profile
+  --vscode|-d     Install vscode extensions
 
 Without any option it runs the complete setup.
 EOF
@@ -247,6 +257,7 @@ KREW=0
 CNBC=0
 DEFAULTS=0
 TERMINAL=0
+DOCKER=0
 VSCODE=0
 # translate long options to short
 for arg; do
@@ -255,6 +266,7 @@ for arg; do
 	--help) args="${args}-h " ;;
 	--update) args="${args}-u " ;;
 	--brew) args="${args}-b " ;;
+	--docker) args="${args}-d " ;;
 	--cnbc) args="${args}-c " ;;
 	--full) args="${args}-f " ;;
 	--mas) args="${args}-m " ;;
@@ -279,6 +291,7 @@ while getopts ":ubcmkfdBDtv" opt; do
 	u) UPDATE=1 ;;
 	b) BREW=1 ;;
 	c) CNBC=1 ;;
+	d) DOCKER=1 ;;
 	f) FULL=1 ;;
 	m) MAS=1 ;;
 	k) KREW=1 ;;
@@ -314,4 +327,5 @@ if [ $BREWUP == 1 ]; then install_brewup; fi
 if [ $TERMINAL == 1 ]; then install_terminal_profiles; fi
 if [ $DEFAULTS == 1 ]; then set_defaults; fi
 if [ $FULL == 1 ]; then install_brew_packages full; fi
+if [ $DOCKER == 1 ]; then install_docker_extension; fi
 if [ $VSCODE == 1 ]; then install_vscode_extension; fi

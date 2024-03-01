@@ -1,0 +1,8 @@
+aquasec/trivy-docker-extension:0.4.7
+docker/resource-usage-extension:1.0.4
+docker/volumes-backup-extension:1.1.4
+docker/disk-usage-extension:0.2.9
+docker/logs-explorer-extension:0.2.6
+portainer/portainer-docker-extension:2.19.4
+digmaai/digma-docker-extension:0.6.92
+nicobeck/registry-explorer-extension:0.0.2

@@ -165,6 +165,33 @@ mas search BlackMagic
    425264550  Blackmagic Disk Speed Test     (3.4.2)
 ```
 
+## Docker and Kubernetes Support
+
+- Support Docker extensions cli
+
+```shell
+docker extension list --format="json" | jq -r ".[].image"
+```
+
+- Support containerd immage store
+
+Start a shell at your Docker VM
+
+- https://gist.github.com/BretFisher/5e1a0c7bcca4c735e716abf62afad389
+
+```shell
+docker run -it --rm --privileged --pid=host justincormack/nsenter1
+cat >>/etc/containerd/config.toml <<EOF
+
+[plugins."io.containerd.grpc.v1.cri".registry]
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+    [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
+      endpoint = ["http://host.docker.internal:5001"]
+    [plugins."io.containerd.grpc.v1.cri".registry.mirrors."registry.k8s.io"]
+      endpoint = ["http://host.docker.internal:5002"]
+EOF
+```
+
 ## Licensing
 
 Copyright (c) 2024 Peter Rossbach <peter.rossbach@bee42.com>
