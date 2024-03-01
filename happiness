@@ -176,6 +176,14 @@ function install_krew_packages() {
 		xargs kubectl krew install
 }
 
+function install_vscode_extension() {
+	echo "Install new vscode_extension from code.txt"
+	comm -23 \
+		<(sort ~/develop/brewup/code.txt) \
+		<(code --list-extensions | grep) |
+		xargs code --install-extension
+}
+
 function create_docker_cnbc_dev() {
 	if command -v docker-compose >/dev/null 2>&1; then
 		echo "Installing local mirror registries (docker hub and k8s) ..."
@@ -239,6 +247,7 @@ KREW=0
 CNBC=0
 DEFAULTS=0
 TERMINAL=0
+VSCODE=0
 # translate long options to short
 for arg; do
 	delim=""
@@ -253,6 +262,7 @@ for arg; do
 	--brewup) args="${args}-B " ;;
 	--defaults) args="${args}-D " ;;
 	--terminal) args="${args}-t " ;;
+	--vscode) args="${args}-v " ;;
 	# pass through anything else
 	*)
 		[[ "${arg:0:1}" == "-" ]] || delim="\""
@@ -263,7 +273,7 @@ done
 # reset the translated args
 eval set -- "$args"
 # now we can process with getopt
-while getopts ":ubcmkfdBDt" opt; do
+while getopts ":ubcmkfdBDtv" opt; do
 	case $opt in
 	h) usage ;;
 	u) UPDATE=1 ;;
@@ -275,6 +285,7 @@ while getopts ":ubcmkfdBDt" opt; do
 	B) BREWUP=1 ;;
 	D) DEFAULTS=1 ;;
 	t) TERMINAL=1 ;;
+	v) VSCODE=1 ;;
 	\?) usage ;;
 	:)
 		echo "option -$OPTARG requires an argument"
@@ -303,3 +314,4 @@ if [ $BREWUP == 1 ]; then install_brewup; fi
 if [ $TERMINAL == 1 ]; then install_terminal_profiles; fi
 if [ $DEFAULTS == 1 ]; then set_defaults; fi
 if [ $FULL == 1 ]; then install_brew_packages full; fi
+if [ $VSCODE == 1 ]; then install_vscode_extension; fi
