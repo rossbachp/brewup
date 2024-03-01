@@ -53,8 +53,8 @@ function install_brewup() {
 	mkdir -p ~/develop
 	cd ~/develop
 	if [ ! -d ~/develop/brewup ]; then
-		echo "Cloning dotfiles repo"
-		git clone https://github.com/bee42/brewup
+		echo "Cloning brewup repo"
+		git clone https://github.com/rossbachp/brewup
 	else
 		echo "Updating brewup repo"
 	fi
@@ -64,7 +64,7 @@ function install_brewup() {
 
 function install_mas_packages() {
 	echo "Install new App Store Apps from mas.txt"
-ma	comm -23 \
+	comm -23 \
 		<(sort ~/develop/brewup/mas.txt) \
 		<(mas info) |
 		xargs mas install
@@ -74,7 +74,7 @@ function install_brew_packages() {
 	mode=$1
 	echo "Install new brews from brew.txt"
 	comm -23 \
-		<(sort ~/develop/brewup/brew.txt) \
+		<(sort ~/develop/brewup/brew-$mode.txt) \
 		<(brew ls --full-name) |
 		xargs brew install
 

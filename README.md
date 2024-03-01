@@ -88,7 +88,15 @@ xcode-select --install
 mkdir -p ~/develop && cd ~develop
 curl -fsSL -o happiness https://raw.githubusercontent.com/rossbachp/brewup/main/happiness
 chmod +x happiness
+# install brew 
+./happiness -b
 ```
+
+Full installation
+
+```bash
+curl -fsSL -o happiness https://raw.githubusercontent.com/rossbachp/brewup/main/happiness | bash
+````
 
 Features:
 
