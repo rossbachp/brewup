@@ -296,7 +296,7 @@ fi
 if [ $UPDATE == 1 ]; then check_macos_updated; fi
 if [ $BREW == 1 ]; then install_brew; fi
 if [ $BREW == 1 ]; then install_brew_packages minimal; fi
-if [ $CNBC == 1 ]; then create_docker_cnbc_dev(); fi
+if [ $CNBC == 1 ]; then create_docker_cnbc_dev; fi
 if [ $MAS == 1 ]; then install_mas_packages; fi
 if [ $KREW == 1 ]; then install_krew_packages; fi
 if [ $BREWUP == 1 ]; then install_brewup; fi
