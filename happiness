@@ -72,7 +72,7 @@ function install_mas_packages() {
 
 function install_brew_packages() {
 	mode=$1
-	echo "Install new brews from brew.txt"
+	echo "Install new brews from brew-$mode.txt"
 	comm -23 \
 		<(sort ~/develop/brewup/brew-$mode.txt) \
 		<(brew ls --full-name) |
