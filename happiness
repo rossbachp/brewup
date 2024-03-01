@@ -25,10 +25,10 @@ function install_brew() {
 	fi
 
   # install Xcode command line tools
-	xcode-select -p | ERR=$?
-	if [ ]"$ERR" != "0" ] ; then
-    xcode-select --install
-	fi
+	#xcode-select -p | ERR=$?
+	#if [ ]"$ERR" != "0" ] ; then
+  #  xcode-select --install
+	#fi
 
 	# NVM
   if [ ! -d ~/.nvm ]; then

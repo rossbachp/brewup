@@ -80,8 +80,14 @@ Mac Apps
 - Wireguard
 - XCode
   
+On a fresh mac - make backup with timemachine first!
+
 ```shell
-curl -fsSL https://raw.githubusercontent.com/rossbachp/brewup/main/happiness | bash
+xcode-select --install
+# find dialog and install the developer tools
+mkdir -p ~/develop && cd ~develop
+curl -fsSL -o happiness https://raw.githubusercontent.com/rossbachp/brewup/main/happiness
+chmod +x happiness
 ```
 
 Features:
