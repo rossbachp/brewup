@@ -210,15 +210,19 @@ function create_docker_cnbc_dev() {
 	"experimental": true,
 	"metrics-addr": "0.0.0.0:9323",
 	"registry-mirrors": [ "http://host.docker.internal:5001" ],
-	"insecure-registries" : [ "host.docker.internal:5001", "host.docker.internal:5002", "host.docker.internal:5000", "cnbc-registry:5000", "cnbc-docker-mirror:5001", "cnbc-k8s-mirror:5002" ] 
+	"insecure-registries" : [ "host.docker.internal:5001", "host.docker.internal:5002", "host.docker.internal:5003", "cnbc-registry:5003", "cnbc-docker-mirror:5001", "cnbc-k8s-mirror:5002" ] 
 }
 EOF
+
 	else
 		echo "Please install docker before your can start the cnbc-dev containers"
 	fi
 
-	echo "Add docker-mac-net-connect as Service ..."
-	sudo brew services start chipmk/tap/docker-mac-net-connect
+
+	if ! [ "$(sudo brew services list --json | jq -r ".[].name" | grep docker-mac-net-connect)" == "docker-mac-net-connect" ] ; then
+	  echo "Add docker-mac-net-connect as Service ..."
+		sudo brew services start chipmk/tap/docker-mac-net-connect
+	fi
 }
 
 function usage() {

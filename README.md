@@ -69,6 +69,8 @@ EOF
 tmux source ~/.tmux.conf
 ```
 
+## SSH key
+
 * https://docs.github.com/de/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
 
 ```shell
@@ -81,6 +83,8 @@ Host github.com
   IdentityFile ~/.ssh/id_ed25519-github
 EOF
 ssh-add --apple-use-keychain ~/.ssh/id_ed25519-github
+# Add new key to your github account
+cat ~/.ssh/id_ed25519-github.pub | pbcopy
 ```
 
 Mac Apps
@@ -203,16 +207,18 @@ Start a shell at your Docker VM
 
 - https://gist.github.com/BretFisher/5e1a0c7bcca4c735e716abf62afad389
 
+Sorry is readonly file system....
+exit
 ```shell
 docker run -it --rm --privileged --pid=host justincormack/nsenter1
 cat >>/etc/containerd/config.toml <<EOF
 
-[plugins."io.containerd.grpc.v1.cri".registry]
-  [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
-    [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
-      endpoint = ["http://host.docker.internal:5001"]
-    [plugins."io.containerd.grpc.v1.cri".registry.mirrors."registry.k8s.io"]
-      endpoint = ["http://host.docker.internal:5002"]
+  [plugins."io.containerd.grpc.v1.cri".registry]
+    [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
+        endpoint = ["http://host.docker.internal:5001"]
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors."registry.k8s.io"]
+        endpoint = ["http://host.docker.internal:5002"]
 EOF
 ```
 

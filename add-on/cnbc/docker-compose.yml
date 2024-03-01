@@ -24,7 +24,7 @@ services:
   registry:
     image: registry:2
     ports:
-      - 5000:5000
+      - 5003:5003
     environment:
       - TZ=Europe/Berlin
     volumes:
