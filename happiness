@@ -213,7 +213,8 @@ function create_docker_cnbc_dev() {
 	"insecure-registries" : [ "host.docker.internal:5001", "host.docker.internal:5002", "host.docker.internal:5003", "cnbc-registry:5003", "cnbc-docker-mirror:5001", "cnbc-k8s-mirror:5002" ] 
 }
 EOF
-
+    echo "add to /etc/hosts"
+	  echo "127.0.0.1       host.docker.internal cnbc-docker-mirror cnbc-k8s-mirror cnbc-registry"
 	else
 		echo "Please install docker before your can start the cnbc-dev containers"
 	fi
