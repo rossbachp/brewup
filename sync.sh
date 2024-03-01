@@ -62,7 +62,13 @@ else
   fi
 fi
 
-
+mkdir -p $HOME/.tmux/
+cd $HOME/.tmux/
+git clone --depth 1 https://github.com/jonmosco/kube-tmux
+cat >>~/.tmux.conf <<EOF
+set -g status-right "#(/bin/bash $HOME/.tmux/kube-tmux/kube.tmux 250 red cyan)"
+EOF
+tmux source ~/.tmux.conf
 
 unset doIt
 source ~/.bash_profile
