@@ -52,7 +52,7 @@
 [push]
 	default = simple
 [commit]
-	gpgsign = true
+	gpgsign = false
 [credential]
   helper = osxkeychain
 [pull]
