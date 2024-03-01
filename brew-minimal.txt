@@ -19,5 +19,3 @@ wget
 socat
 shellcheck
 pwgen
-docker
-docker-completion
