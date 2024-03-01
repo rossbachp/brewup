@@ -1,17 +1,22 @@
-apiVersion: k3d.io/v1alpha4
+apiVersion: k3d.io/v1alpha5
 kind: Simple
 metadata:
   name: cnbc-homelab
 servers: 1
 agents: 2
 kubeAPI:
-  host: "cnbc-homelab.bee42.io"
   hostIP: "0.0.0.0"
   hostPort: "8545"
-image: rancher/k3s:v1.29.1-k3s2
-network: cnbc-homelab
-subnet: "172.28.0.0/16"
-token: cnbc-DEV-0815!
+image: rancher/k3s:v1.29.1-k3s1
+#subnet: "172.28.0.0/16"
+#token: "cnbc-HOME-0815!"
+ports:
+- port: "8580:80"
+  nodeFilters:
+  - loadbalancer
+- port: "8543:443"
+  nodeFilters:
+  - loadbalancer
 #volumes:
 #- volume: /Users/peter/develop/brewup/add-on/kubernetes/k3d/manifests:/var/lib/rancher/k3s/server/manifests
 #  nodeFilters:
@@ -36,28 +41,25 @@ registries:
         - "http://host.docker.internal:5003"
 options:
   k3d:
-    wait: true
+    wait: false
     timeout: "60s"
-    disableLoadbalancer: true
+    disableLoadbalancer: false
     disableImageVolume: false
     disableRollback: false
     loadbalancer:
       configOverrides:
       - settings.workerConnections=2048
   k3s:
-    extraArgs:
-    - arg: --tls-san=cnbc-homelab.bee42.io
-      nodeFilters:
-      - server:*
-    - arg: --disable=traefik
-      nodeFilters:
-      - server:*
-    - arg: --disable-network-policy
-      nodeFilters:
-      - server:*
-    - arg: --disable-kube-proxy
-      nodeFilters:
-      - server:*
+    #  extraArgs:
+    #  - arg: --disable=traefik
+    #    nodeFilters:
+    #    - server:*
+    #  - arg: --disable=network-policy
+    #    nodeFilters:
+    #    - server:*
+    #  - arg: --disable=kube-proxy
+    #    nodeFilters:
+    #    - server:*
     nodeLabels:
     - label: node-role.kubernetes.io/worker=true
       nodeFilters:
@@ -66,7 +68,6 @@ options:
     updateDefaultKubeconfig: true
     switchCurrentContext: true
   runtime:
-    gpuRequest: all
     ulimits:
     - name: nofile
       soft: 26677

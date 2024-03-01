@@ -2,7 +2,7 @@
 
 ```shell
 k3d cluster create cnbc-homelab \
-  --agents-memory 4Gi \
-  --servers-memory 2Gi \
+  --agents-memory 4Gb \
+  --servers-memory 2Gb \
   --config $(pwd)/cnbc-homelab.yaml
 ```
