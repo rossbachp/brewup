@@ -81,7 +81,7 @@ function install_brew_packages() {
 	echo "Add new taps from brew-tap.txt"
 	comm -23 \
 		<(sort ~/develop/brewup/brew-tap.txt) \
-		<(brew tap) |
+		<(brew tap-info --installed --json | jq -r ".[].name") |
 		xargs brew tap
 
 	echo "Install new casks from cask-$mode.txt"

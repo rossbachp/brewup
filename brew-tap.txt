@@ -1,2 +1,4 @@
 homebrew/cask-fonts
 homebrew/core
+homebrew/bundle
+homebrew/services
