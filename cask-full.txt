@@ -19,4 +19,4 @@ intellij-idea-ce
 microsoft-teams
 spotify
 vagrant
-virtualbox
+homebrew/core/rust
