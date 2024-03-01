@@ -1,3 +1,8 @@
 homebrew/cask-fonts
 homebrew/core
 homebrew/bundle
+fluxcd/tap
+chipmk/tap
+dagger/tap
+artifacthub/cmd
+go-task/tap

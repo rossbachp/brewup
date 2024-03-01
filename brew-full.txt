@@ -43,7 +43,7 @@ mas
 ansible
 go
 go-jsonnet
-go-task/tap/go-task
+go-task
 ipcalc
 openjdk
 openjdk@11
@@ -63,7 +63,7 @@ wget
 xz
 jq
 yq
-artifacthub/cmd/ah
+ah
 cypher-shell
 graphviz
 docker
@@ -80,8 +80,9 @@ clusterctl
 cilium-cli
 hubble
 jsonnet-bundler
-chipmk/tap/docker-mac-net-connect
-fluxcd/tap/flux
+docker-mac-net-connect
+flux
 1password-cli
 tmux
-dagger/tap/dagger
+dagger
+rust
