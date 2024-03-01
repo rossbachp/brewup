@@ -1,4 +1,3 @@
-task
 mas
 1password-cli
 tmux
