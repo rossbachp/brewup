@@ -5,29 +5,12 @@ metadata:
 servers: 1
 agents: 2
 kubeAPI:
+  host: "0.0.0.0"
   hostIP: "0.0.0.0"
   hostPort: "8545"
-image: rancher/k3s:v1.29.1-k3s1
-#subnet: "172.28.0.0/16"
-#token: "cnbc-HOME-0815!"
-ports:
-- port: "8580:80"
-  nodeFilters:
-  - loadbalancer
-- port: "8543:443"
-  nodeFilters:
-  - loadbalancer
-#volumes:
-#- volume: /Users/peter/develop/brewup/add-on/kubernetes/k3d/manifests:/var/lib/rancher/k3s/server/manifests
-#  nodeFilters:
-#  - server:0
+image: rancher/k3s:v1.29.2-k3s1
+network: cnbc-homelab
 registries:
-  #  create: # creates a default registry to be used with the cluster; same as `--registry-create registry.localhost`
-  #    name: registry.localhost
-  #   host: "0.0.0.0"
-  #    hostPort: "5000"
-  #use:
-  #- host.docker.internal:5003
   config: |
     mirrors:
       docker.io:
@@ -41,29 +24,34 @@ registries:
         - "http://host.docker.internal:5003"
 options:
   k3d:
-    wait: false
+    wait: true
     timeout: "60s"
-    disableLoadbalancer: false
+    disableLoadbalancer: true
     disableImageVolume: false
     disableRollback: false
     loadbalancer:
       configOverrides:
       - settings.workerConnections=2048
   k3s:
-    #  extraArgs:
-    #  - arg: --disable=traefik
-    #    nodeFilters:
-    #    - server:*
-    #  - arg: --disable=network-policy
-    #    nodeFilters:
-    #    - server:*
-    #  - arg: --disable=kube-proxy
-    #    nodeFilters:
-    #    - server:*
-    nodeLabels:
-    - label: node-role.kubernetes.io/worker=true
+    extraArgs:
+    - arg: --disable=servicelb
       nodeFilters:
-      - agent:*
+      - server:*
+    - arg: --disable=traefik
+      nodeFilters:
+      - server:*
+    - arg: --disable-network-policy
+      nodeFilters:
+      - server:*
+    - arg: --disable-kube-proxy
+      nodeFilters:
+      - server:*
+    - arg: --flannel-backend=none
+      nodeFilters:
+      - server:*
+    - arg: --cluster-init=true
+      nodeFilters:
+      - server:*
   kubeconfig:
     updateDefaultKubeconfig: true
     switchCurrentContext: true

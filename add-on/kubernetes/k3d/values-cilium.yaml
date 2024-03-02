@@ -1,0 +1,34 @@
+hubble:
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+bpf:
+  masquerade: true
+bgp:
+  enabled: false
+cluster:
+  name: cnbc-homelab
+  id: 2
+endpointRoutes:
+  enabled: true
+ipam:
+  mode: kubernetes
+k8s:
+  requireIPv4PodCIDR: true
+kubeProxyReplacement: true
+kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+l2announcements:
+  enabled: true
+  # https://github.com/cilium/cilium/issues/26586
+  leaseDuration: 120s
+  leaseRenewDeadline: 60s
+  leaseRetryPeriod: 1s
+loadBalancer:
+  algorithm: maglev
+  mode: snat
+localRedirectPolicy: true
+ingressController:
+  enabled: true
+  loadbalancerMode: "shared"
+
