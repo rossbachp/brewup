@@ -1,0 +1,31 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: homelab-yellow-pages
+  namespace: flux-system
+spec:
+  interval: 30m
+  ref:
+    branch: "main"
+  secretRef:
+    name: ssh-credentials
+  url: "ssh://git@$172.20.0.250/srv/git/homelab-yellow-pages.git"
+  ignore: |
+    # exclude all
+    /*
+    # include kubernetes directory
+    !/kubernetes
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cluster
+  namespace: flux-system
+spec:
+  interval: 30m
+  path: ./kubernetes/flux
+  prune: true
+  wait: false
+  sourceRef:
+    kind: GitRepository
+    name: homelab-yellow-pages
