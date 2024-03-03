@@ -222,6 +222,23 @@ cat >>/etc/containerd/config.toml <<EOF
 EOF
 ```
 
+## Ideas
+
+- Use NIX
+  - https://zero-to-nix.com 
+  - https://sandstorm.de/de/blog/post/my-first-steps-with-nix-on-mac-osx-as-homebrew-replacement.html
+- Use taskfile
+  - Complitions:
+  - https://github.com/Berger91/taskfile-zsh-autocompletion/blob/master/README.md
+
+## Prototype Nix
+
+```shell
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+nix --version
+echo "Hello Nix" | nix run "nixpkgs#ponysay"
+```
+
 ## Licensing
 
 Copyright (c) 2024 Peter Rossbach <peter.rossbach@bee42.com>

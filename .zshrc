@@ -15,10 +15,10 @@ jdk() {
 
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
-plugins=(git kubectl docker docker-compose helm mvn kube-ps1)
+plugins=(git kubectl docker docker-compose helm mvn kube-ps1 task)
 source $ZSH/oh-my-zsh.sh
 PROMPT='$(kube_ps1)'$PROMPT
 
-for cli (kubectl kind k3d helm flux cilium) ; do
+for cli (kubectl kind k3d helm flux cilium hubble) ; do
   source  <($cli completion zsh)
 done
