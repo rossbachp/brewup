@@ -1,3 +1,10 @@
+# ----
+# File:        system-upgrade.yaml
+# Description: Install a K3s Upgrade Controller service
+# URL:         https://github.com/rancher/system-upgrade-controller
+# Author:      Peter Rossbach <peter.rossbach@bee42.com>
+# Copyright:   (c) 2024 bee42 solutions gmbh
+# ----
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -33,7 +40,7 @@ data:
   SYSTEM_UPGRADE_JOB_ACTIVE_DEADLINE_SECONDS: "900"
   SYSTEM_UPGRADE_JOB_BACKOFF_LIMIT: "99"
   SYSTEM_UPGRADE_JOB_IMAGE_PULL_POLICY: Always
-  SYSTEM_UPGRADE_JOB_KUBECTL_IMAGE: rancher/kubectl:v1.17.0
+  SYSTEM_UPGRADE_JOB_KUBECTL_IMAGE: docker.io/bitnami/kubectl:1.29.2
   SYSTEM_UPGRADE_JOB_PRIVILEGED: "true"
   SYSTEM_UPGRADE_JOB_TTL_SECONDS_AFTER_FINISH: "900"
   SYSTEM_UPGRADE_PLAN_POLLING_INTERVAL: 15m
@@ -74,7 +81,7 @@ spec:
         envFrom:
         - configMapRef:
             name: default-controller-env
-        image: rancher/system-upgrade-controller:v0.4.0
+        image: docker.io/rancher/system-upgrade-controller:v0.4.0
         imagePullPolicy: IfNotPresent
         name: system-upgrade-controller
         volumeMounts:

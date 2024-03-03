@@ -1,0 +1,19 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+containerdConfigPatches:
+- |
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
+    endpoint = ["http://host.docker.internal:5001"]
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."k8s.io"]
+    endpoint = ["http://host.docker.internal:5002"]
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."cnbc-registry:5003"]
+    endpoint = ["http://host.docker.internal:5003"]
+networking:
+  disableDefaultCNI: true
+  kubeProxyMode: none
+  podSubnet: "10.10.0.0/16"
+  serviceSubnet: "10.11.0.0/16"
+nodes:
+- role: control-plane
+- role: worker
+- role: worker

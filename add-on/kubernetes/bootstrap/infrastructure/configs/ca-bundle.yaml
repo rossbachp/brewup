@@ -1,3 +1,9 @@
+# ----
+# File:        ca-bundle.yaml
+# Description: define selfsign certs and intermediated ca
+# Author:      Peter Rossbach <peter.rossbach@bee42.com>
+# Copyright:   (c) 2024 bee42 solutions gmbh
+# ----
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -42,4 +48,3 @@ metadata:
 spec:
   ca:
     secretName: ca
-

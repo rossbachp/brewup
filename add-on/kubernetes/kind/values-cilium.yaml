@@ -15,22 +15,15 @@ bgp:
   enabled: false
 cluster:
   name: cnbc-homelab
-  id: 2
+  id: 3
 endpointRoutes:
   enabled: true
 ipam:
   mode: kubernetes
 k8s:
   requireIPv4PodCIDR: true
-hostServices:
-  enabled: false
-externalIPs:
-  enabled: true
-nodePort:
-  enabled: true
-hostPort:
-  enabled: true
 kubeProxyReplacement: strict
+#kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
   enabled: true
@@ -45,8 +38,14 @@ localRedirectPolicy: true
 ingressController:
   enabled: true
   loadbalancerMode: "shared"
-#externalIPs:
-#  enabled: true
+hostServices:
+  enabled: false
+externalIPs:
+  enabled: true
+nodePort:
+  enabled: true
+hostPort:
+  enabled: true
 debug:
   # -- Enable debug logging
   enabled: true

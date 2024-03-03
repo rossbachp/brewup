@@ -1,0 +1,74 @@
+# ----
+# File:        Taskfile.yml
+# Description: Create local kind cluster with cilium as CNI Provider
+# Author:      Peter Rossbach <peter.rossbach@bee42.com>
+# Copyright:   (c) 2024 bee42 solutions gmbh
+# ----
+version: '3'
+
+env:
+  CLUSTERNAME: cnbc-homelab
+  API_SERVER_PORT: "6443"
+  CILIUM_CHART_VERSION: "1.15.1"
+  CLUSTER_CIDR: 10.11.0.0/16
+  IMAGE: kindest/node:v1.29.2
+
+tasks:
+  kind:network:
+    cmds:
+    - /bin/sh -c "if test \"$(docker network inspect kind)\" == \"[]\" ; then docker network create --driver=bridge --subnet=172.30.0.0/24 --ip-range=172.30.0.0/25 --gateway=172.30.0.1 kind ; fi"
+    silent: true
+  kind:cluster:
+    cmds:
+    - kind create cluster --name $CLUSTERNAME --image $IMAGE --retain --wait -1s --config=kind-config.yaml
+  kind:worker:
+    vars:
+      WORKER:
+        sh: kubectl get nodes -l "! node-role.kubernetes.io/control-plane" -o jsonpath="{.items[*].metadata.name}"
+    cmds:
+    - for: {var: WORKER}
+      cmd: kubectl label node/{{ .ITEM }} node-role.kubernetes.io/worker=
+    silent: false
+  kind:cilium:
+    cmds:
+    - /bin/sh -c "if test "$(helm repo list --output json | jq -r ".[].name" | grep cilium)z" == "z" ; then helm repo add cilium https://helm.cilium.io/ ; fi"
+    - |
+      export API_SERVER_IP=$(docker container inspect $CLUSTERNAME-control-plane --format json | jq -r ".[].NetworkSettings.Networks.kind.IPAddress") && \
+      helm upgrade --install cilium cilium/cilium \
+        --version ${CILIUM_CHART_VERSION} \
+        --namespace kube-system \
+        --set k8sServiceHost=${API_SERVER_IP} \
+        --set k8sServicePort=${API_SERVER_PORT} \
+        --set ipv4NativeRoutingCIDR=${CLUSTER_CIDR} \
+        --values values-cilium.yaml --wait --timeout=60s
+    #    - sleep 5
+    - kubectl apply -f ipam.yaml
+    - cilium status --wait
+    silent: false
+  kind:delete:
+    cmds:
+    - kind delete cluster --name $CLUSTERNAME
+  kind:
+    cmds:
+    - task: kind:network
+    - task: kind:cluster
+    - task: kind:cilium
+
+  hubble:
+    cmds:
+    - cilium hubble port-forward &
+    - cilium hubble ui
+
+  nginx:test:
+    cmds:
+    - kubectl create namespace nginx
+    - kubectl ns nginx
+    - kubectl run nginx --image nginx --expose --port 80
+    - kubectl create job curl --image curlimages/curl -- curl -s nginx
+    - kubectl wait --for=condition=complete job/curl --timeout=30s
+    - kubectl create ingress nginx --class=cilium --rule="nginx.cnbc-homelab.bee42.io/*=nginx:80"
+    - sleep 2
+    - |
+      IP=$(kubectl get ingress nginx -o jsonpath="{.status.loadBalancer.ingress[0].ip}") && \
+      # Sorry but the LB-IP 172.29.0.129 doesn't answer!!! You know why, oelase send me email or report a pullrequest
+      curl -v -s --resolve "nginx.cnbc-homelab.bee42.io:80:$IP" http://nginx.cnbc-homelab.bee42.io

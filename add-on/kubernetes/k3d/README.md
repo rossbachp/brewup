@@ -2,15 +2,22 @@
 
 ## CNI Provider Cilium:
 
+I review this references to get my exyample up and running. Many thanks to share this with me.
+
 - [Cilium](https://cilium.io)
   - https://www.edvpfau.de/kubernetes-k3d-mit-cilium-und-hubble/
   - https://blog.stonegarden.dev/articles/2024/02/bootstrapping-k3s-with-cilium/
   - https://github.com/cilium/cilium/issues/18675
-  
+  - https://docs.cilium.io/en/stable/operations/system_requirements/#linux-kernel
+  - https://sandstorm.de/de/blog/post/running-cilium-in-k3s-and-k3d-lightweight-kubernetes-on-mac-os-for-development.html
+  - https://blogops.mixinet.net/posts/testing_cilium_with_k3d_and_kind/
+  - https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/#nodeport-devices
+
 ## Create Cluster with k3d
 
 - [K3d](https://k3d.io/)
 - [Check K3S images](https://hub.docker.com/r/rancher/k3s/tags?page=1&name=1.29)
+- [K3s server cli args](https://docs.k3s.io/cli/server)
 
 ```shell
 CLUSTERNAME=cnbc-homelab
@@ -28,6 +35,7 @@ k3d cluster create $CLUSTERNAME \
   --servers-memory 2Gb \
   --config $(pwd)/cnbc-homelab.yaml
 
+# Now I add this to k3d-entrypoint-clilum.sh t every node before cilium agent starts :)
 # prepare the k3d container nodes for eBPF usage
 CLUSTERNAME=cnbc-homelab
 CLUSTERWORKER=2
@@ -92,9 +100,32 @@ metadata:
 spec:
   blocks:
   - cidr: "$(echo "${API_SERVER_IP}" | awk -F "." '{ printf "%s.%s.%s.128/28", $1,$2,$3 }')"
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumL2AnnouncementPolicy
+metadata:
+  name: ingress
+spec:
+  serviceSelector:
+    matchLabels:
+      cilium.io/ingress: "true"
+  nodeSelector:
+    matchExpressions:
+    - key: node-role.kubernetes.io/control-plane
+      operator: DoesNotExist
+  interfaces:
+  - ^eth[0-9]+
+  #  externalIPs: true
+  loadBalancerIPs: true
 EOF
 k apply -f ipam.yaml
+k get l2announcement
+NAME      AGE
+ingress   18s
+cilium connectivity test
+# a lot errors...
 ```
+
 
 ## Start a nginx example service
 
@@ -114,15 +145,76 @@ k create ingress nginx --class=cilium --rule="nginx.cnbc-homelab.bee42.io/*=ngin
 k get ingress
 # Sorry but the LB-IP 172.29-129 doesn't answer!!! You know why, oelase send me email or report a pullrequest
 curl --resolve "nginx.cnbc-homelab.bee42.io:80:172.29.0.129" http://nginx.cnbc-homelab.bee42.io
+
+# Service IP is available but ingress made problems
+curl -H "Host: nginx.cnbc-homelab.bee42.io"  -v http://172.29.0.129
+*   Trying 172.29.0.129:80...
+* Connected to 172.29.0.129 (172.29.0.129) port 80
+> GET / HTTP/1.1
+> Host: nginx.cnbc-homelab.bee42.io
+> User-Agent: curl/8.4.0
+> Accept: */*
+> 
+< HTTP/1.1 503 Service Unavailable
+< content-length: 91
+< content-type: text/plain
+< date: Sun, 03 Mar 2024 13:07:12 GMT
+< server: envoy
+< 
+* Connection #0 to host 172.29.0.129 left intact
+
+# inside the net
+docker run -it --rm --network container:k3d-cnbc-homelab-agent-1 curlimages/curl /bin/sh
+curl -v -s --resolve "nginx.cnbc-homelab.bee42.io:80:172.29.0.129" http://nginx.cnbc-homelab.bee42.io
+# you can see the ARP entry but noting is forwared..
+arp -a
+? (172.29.0.1) at 02:42:55:89:81:e9 [ether]  on eth0
+? (10.42.1.159) at 6a:df:51:2b:40:69 [ether]  on lxcaba2882b0034
+k3d-cnbc-homelab-agent-0.cnbc-homelab (172.29.0.5) at 02:42:ac:1d:00:05 [ether]  on eth0
+? (10.42.1.1) at 3a:e1:88:80:9e:87 [ether]  on lxc41db9546bdf3
+? (10.42.1.173) at b6:20:3f:7e:c0:83 [ether]  on lxc2eb2ef3f1cfd
+? (172.29.0.129) at 02:42:ac:1d:00:05 [ether]  on eth0
+? (10.42.1.219) at 9e:45:65:a6:88:be [ether]  on lxc_health
+k3d-cnbc-homelab-server-0.cnbc-homelab (172.29.0.3) at 02:42:ac:1d:00:03 [ether]  on eth0
+? (10.42.1.119) at 1e:a2:0f:43:94:66 [ether]  on lxce45c82971043
+```
+
+
+hubble
+
+```shell
+cilium hubble port-forward&
+hubble status
+hubble observe
+curl -v -s --resolve "nginx.cnbc-homelab.bee42.io:80:172.29.0.129" http://nginx.cnbc-homelab.bee42.io
+curl -v -s -H "Host: nginx.cnbc-homelab.bee42.io" http://172.29.0.129 
+hubble observe --pod nginx --protocol http
+hubble observe --from-service kube-system/cilium-ingress --protocol http
+Mar  3 15:45:52.752: 172.29.0.1:64231 (ingress) <- kube-system/cilium-ingress:80 (world) http-response FORWARDED (HTTP/1.1 503 5001ms (GET http://nginx.cnbc-homelab.bee42.io/))
+Mar  3 15:47:40.563: 172.29.0.1:64255 (ingress) <- kube-system/cilium-ingress:80 (world) http-response FORWARDED (HTTP/1.1 503 5002ms (GET http://nginx.cnbc-homelab.bee42.io/))
+hubble observe --from-service nginx/nginx
+# empty
+k get ingress
+NAME    CLASS    HOSTS                         ADDRESS        PORTS   AGE
+nginx   cilium   nginx.cnbc-homelab.bee42.io   172.29.0.129   80      24h
+hubble observe --pod nginx --verdict DROPPED
 ```
 
 ## Bootstrap infrastructure services
+
+- https://byby.dev/bash-exit-codes#:~:text=The%20special%20shell%20variable%20%24%3F%20in%20bash%20is%20used%20to,actions%20based%20on%20the%20result.
+- Taskfile
+
+```shell
+task cnbc
+```
 
 ## Teardown the cluster
 
 ```shell
 k3d cluster delete cnbc-homelab
 ```
+
 
 ## Licensing
 

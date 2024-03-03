@@ -1,3 +1,9 @@
+# ----
+# File:        cnbc-homelab.yaml
+# Description: k3d clusters configuration to enable cilium CNI network provider
+# Author:      Peter Rossbach <peter.rossbach@bee42.com>
+# Copyright:   (c) 2024 bee42 solutions gmbh
+# ----
 apiVersion: k3d.io/v1alpha5
 kind: Simple
 metadata:
@@ -5,11 +11,14 @@ metadata:
 servers: 1
 agents: 2
 kubeAPI:
-  host: "0.0.0.0"
   hostIP: "0.0.0.0"
-  hostPort: "8545"
-image: rancher/k3s:v1.29.2-k3s1
+  hostPort: "6443"
+image: docker.io/rancher/k3s:v1.29.2-k3s1
 network: cnbc-homelab
+volumes:
+- volume: /Users/peter/develop/brewup/add-on/kubernetes/k3d/bin/k3d-entrypoint-cilium.sh:/bin/k3d-entrypoint-cilium.sh
+  nodeFilters:
+  - all
 registries:
   config: |
     mirrors:
@@ -19,7 +28,7 @@ registries:
       k8s.io:
         endpoint:
         - "http://host.docker.internal:5002"
-      cnbc-registry:
+      "cnbc-registry:5003":
         endpoint:
         - "http://host.docker.internal:5003"
 options:
@@ -34,6 +43,9 @@ options:
       - settings.workerConnections=2048
   k3s:
     extraArgs:
+    - arg: --disable-cloud-controller
+      nodeFilters:
+      - server:*
     - arg: --disable=servicelb
       nodeFilters:
       - server:*
@@ -49,9 +61,9 @@ options:
     - arg: --flannel-backend=none
       nodeFilters:
       - server:*
-    - arg: --cluster-init=true
-      nodeFilters:
-      - server:*
+      #    - arg: --cluster-init
+      #      nodeFilters:
+      #      - server:*
   kubeconfig:
     updateDefaultKubeconfig: true
     switchCurrentContext: true
@@ -60,3 +72,7 @@ options:
     - name: nofile
       soft: 26677
       hard: 26677
+    labels:
+    - label: role.kubernetes.io/worker=worker
+      nodeFilters:
+      - agent:*

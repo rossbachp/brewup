@@ -1,9 +1,12 @@
 # update controller
 
-* https://github.com/rancher/system-upgrade-controller/blob/master/README.md
-* https://hub.docker.com/r/rancher/k3s-upgrade
-* https://hub.docker.com/r/rancher/k3s
-  
+- https://github.com/rancher/system-upgrade-controller/blob/master/README.md
+- https://hub.docker.com/r/rancher/k3s-upgrade
+- https://hub.docker.com/r/rancher/k3s
+- https://github.com/rancher/kubectl/tree/master/package
+- [bitnami/kubectl:latest](https://github.com/bitnami/containers/tree/main/bitnami/kubectl)
+  - https://hub.docker.com/r/bitnami/kubectl/tags?page=1&name=1.29
+
 ```shell
 #kustomize build github.com/rancher/system-upgrade-controller | kubectl apply -f - 
 # download

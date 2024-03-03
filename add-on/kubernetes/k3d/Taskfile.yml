@@ -1,0 +1,69 @@
+# ----
+# File:        Taskfile.yml
+# Description: Create local k3d cluster with cilium as CNI Provider
+# Author:      Peter Rossbach <peter.rossbach@bee42.com>
+# Copyright:   (c) 2024 bee42 solutions gmbh
+# ----
+version: '3'
+
+env:
+  CLUSTERNAME: cnbc-homelab
+  API_SERVER_PORT: "6443"
+  CLUSTER_CIDR: 10.43.0.0/16
+  CILIUM_CHART_VERSION: "1.15.1"
+
+tasks:
+  test:
+    cmds:
+    - |
+      export API_SERVER_IP=$(docker container inspect k3d-$CLUSTERNAME-server-0 --format json | jq -r ".[].NetworkSettings.Networks.\"$CLUSTERNAME\".IPAddress") &&
+      echo $API_SERVER_IP && \
+      /bin/sh -c "if test "$(helm repo list --output json | jq -r ".[].name" | grep cilium)z" == "z" ; then echo add repo ; fi" && \
+      /bin/sh -c "if test "$(k3d cluster list -o json | jq -r ".[].name" | grep $CLUSTERNAME)z" == "z" ; then echo create cluster ; fi"
+
+  nginx:test:
+    cmds:
+    - kubectl create namespace nginx
+    - kubectl ns nginx
+    - kubectl run nginx --image nginx --expose --port 80
+    - kubectl create job curl --image curlimages/curl -- curl -s nginx
+    - kubectl wait --for=condition=complete job/curl --timeout=30s
+    - kubectl create ingress nginx --class=cilium --rule="nginx.cnbc-homelab.bee42.io/*=nginx:80"
+    - sleep 2
+    - |
+      IP=$(kubectl get ingress nginx -o jsonpath="{.status.loadBalancer.ingress[0].ip}") && \
+      # Sorry but the LB-IP 172.29.0.129 doesn't answer!!! You know why, oelase send me email or report a pullrequest
+      curl -v -s --resolve "nginx.cnbc-homelab.bee42.io:80:$IP" http://nginx.cnbc-homelab.bee42.io
+
+  k3d:network:
+    cmds:
+    - /bin/sh -c "if test \"$(docker network inspect $CLUSTERNAME)\" == \"[]\" ; then docker network create --driver=bridge --subnet=172.29.0.0/24 --ip-range=172.29.0.0/25 --gateway=172.29.0.1 $CLUSTERNAME ; fi"
+    silent: false
+  k3d:cluster:
+    cmds:
+    - /bin/sh -c "if test "$(k3d cluster list -o json | jq -r ".[].name" | grep $CLUSTERNAME)z" == "z" ; then k3d cluster create $CLUSTERNAME --agents-memory 4Gb --servers-memory 2Gb --config $(pwd)/cnbc-homelab.yaml ; fi"
+    silent: false
+  k3d:cilium:
+    cmds:
+    - /bin/sh -c "if test "$(helm repo list --output json | jq -r ".[].name" | grep cilium)z" == "z" ; then helm repo add cilium https://helm.cilium.io/ ; fi"
+    - |
+      export API_SERVER_IP=$(docker container inspect k3d-$CLUSTERNAME-server-0 --format json | jq -r ".[].NetworkSettings.Networks.\"$CLUSTERNAME\".IPAddress") && \
+      helm upgrade --install cilium cilium/cilium \
+        --version ${CILIUM_CHART_VERSION} \
+        --namespace kube-system \
+        --set k8sServiceHost=${API_SERVER_IP} \
+        --set k8sServicePort=${API_SERVER_PORT} \
+        --set ipv4NativeRoutingCIDR=${CLUSTER_CIDR} \
+        --values values-cilium.yaml
+    - kubectl apply -f ipam.yaml
+    - cilium status
+    silent: false
+  k3d:delete:
+    cmds:
+    - k3d cluster delete $CLUSTERNAME
+    silent: true
+  k3d:
+    cmds:
+    - task: k3d:network
+    - task: k3d:cluster
+    - task: k3d:cilium

@@ -1,0 +1,16 @@
+# ----
+# File:        Kustomization.yaml
+# Description: Define infrastructure for cnbc-homelab
+# Author:      Peter Rossbach <peter.rossbach@bee42.com>
+# Copyright:   (c) 2024 bee42 solutions gmbh
+# ----
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- cert-manager/cert-manager.yaml
+- coredns/namespace.yaml
+- coredns/etcd/etcd-service.yaml
+- coredns/etcd/etcd-sts.yaml
+- coredns/coredns.yaml
+- external-dns/external-dns.yaml
+- update-controller/update-controller.yaml
