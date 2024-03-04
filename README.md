@@ -138,7 +138,7 @@ Features:
 - https://github.com/Fred78290/vagrant-multipass
 - https://ohmyz.sh/#install
 
-More options:
+Find more options to brewup with happiness :innocent:
 
 ```shell
 ./happiness --help
@@ -146,20 +146,15 @@ More options:
 
 ## Other options
 
-- docker registry and local git server
+- container image registries and local git server
 - install MAS apps
-- Install krew plugins
+- install more krew plugins
+- create [CNBC smart kubernetes clusters](./add-on/kubernetes/README.md)
+- docker tap support for better access LB and docker network
 
 ### Planned
 
-- docker tap support for better access LB and docker network
-
-```shell
-# Install via Homebrew
-brew install chipmk/tap/docker-mac-net-connect
-# Run the service and register it to launch at boot
-sudo brew services start chipmk/tap/docker-mac-net-connect
-```
+- [Use more emojis](https://gist.github.com/rxaviers/7360908)
 
 - Create kubernetes Resource graphs with [kubectl-graph](https://github.com/steveteuber/kubectl-graph)
 
