@@ -3,3 +3,4 @@ visual-studio-code
 docker
 multipass
 1password
+iterm2

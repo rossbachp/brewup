@@ -25,6 +25,7 @@ pcre2
 pinentry
 pinentry-mac
 pkg-config
+presenterm
 pv
 pwgen
 qrencode
@@ -86,3 +87,4 @@ flux
 tmux
 dagger
 rust
+minetest

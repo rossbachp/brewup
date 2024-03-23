@@ -6,6 +6,7 @@ google-chrome
 docker
 multipass
 1password
+iterm2
 visual-studio-code
 synology-drive
 raspberry-pi-imager
